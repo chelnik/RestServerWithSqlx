@@ -1,0 +1,27 @@
+version: '3'
+services:
+  db:
+    image: mysql:5.7
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: testdb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db:3306
+      DB_USER: user
+      DB_PASSWORD: password
+      DB_NAME: testdb
+
+volumes:
+  db_data:
